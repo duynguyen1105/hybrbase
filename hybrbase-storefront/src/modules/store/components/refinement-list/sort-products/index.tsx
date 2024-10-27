@@ -1,6 +1,7 @@
 "use client"
 
 import FilterRadioGroup from "@modules/common/components/filter-radio-group"
+import FilterSelectGroup from "@modules/common/components/filter-select-group"
 
 export type SortOptions = "price_asc" | "price_desc" | "created_at"
 
@@ -35,7 +36,7 @@ const SortProducts = ({
   }
 
   return (
-    <FilterRadioGroup
+    <FilterSelectGroup
       title="Sort by"
       items={sortOptions}
       value={sortBy}

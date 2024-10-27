@@ -1,33 +1,71 @@
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { getProductsList, getProductsListWithSort } from "@lib/data/products"
+import { getRegion } from "@lib/data/regions"
+import { Button, Heading, Text } from "@medusajs/ui"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import ProductPreview from "@modules/products/components/product-preview"
 
-const Hero = () => {
+type HeroProps = {
+  countryCode: string
+}
+
+const Hero = async ({ countryCode }: HeroProps) => {
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    return null
+  }
+
+  const {
+    response: { products, count },
+  } = await getProductsList({
+    pageParam: 0,
+    queryParams: {
+      limit: 3,
+    },
+    countryCode,
+  })
+
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
-        <span>
-          <Heading
-            level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
+    <div>
+      <div className="w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
+        <div className="inset-0 z-10 flex flex-col justify-center items-center text-center small:p-24 gap-6">
+          <span>
+            <Heading
+              level="h1"
+              className="text-5xl leading-10 text-ui-fg-base font-normal mb-5"
+            >
+              Better clothing for the planet
+            </Heading>
+            <Text className="font-light">
+              Create screens directly in Method or add your images from Sketch
+              or Figma. You can even sync designs from your cloud storage!
+            </Text>
+          </span>
+
+          <LocalizedClientLink
+            className="hover:text-ui-fg-base"
+            href="/store"
+            data-testid="nav-account-link"
           >
-            Ecommerce Starter Template
-          </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
+            <Button variant="secondary" size="xlarge">
+              Shop All
+            </Button>
+          </LocalizedClientLink>
+        </div>
+        <div className="flex justify-center mb-32">
+          <ul
+            className="md:w-[60%] mx-5 flex gap-5"
+            data-testid="products-list"
           >
-            Powered by Medusa and Next.js
-          </Heading>
-        </span>
-        <a
-          href="https://github.com/medusajs/nextjs-starter-medusa"
-          target="_blank"
-        >
-          <Button variant="secondary">
-            View on GitHub
-            <Github />
-          </Button>
-        </a>
+            {products.map((p) => {
+              return (
+                <li key={p.id} className="flex-1">
+                  <ProductPreview product={p} region={region} />
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </div>
     </div>
   )

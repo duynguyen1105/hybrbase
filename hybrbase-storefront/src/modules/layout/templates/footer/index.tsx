@@ -1,6 +1,6 @@
 import { getCategoriesList } from "@lib/data/categories"
 import { getCollectionsList } from "@lib/data/collections"
-import { Text, clx } from "@medusajs/ui"
+import { Button, Heading, Input, Text, clx } from "@medusajs/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
@@ -13,13 +13,23 @@ export default async function Footer() {
     <footer className="border-t border-ui-border-base w-full">
       <div className="content-container flex flex-col w-full">
         <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
-            >
-              Medusa Store
-            </LocalizedClientLink>
+          <div className="flex flex-col gap-6">
+            <Heading level="h1" className="text-3xl">
+              Sign up for our newsletter
+            </Heading>
+            <Text className="txt-small-plus">
+              Be the first to know about our special offers, new product
+              launches, and events
+            </Text>
+            <div className="flex gap-1 w-full">
+              <div className="flex-1">
+                <Input
+                  placeholder="Enter your email"
+                  className="w-full flex-1"
+                />
+              </div>
+              <Button size="base">Sign up</Button>
+            </div>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
             {product_categories && product_categories?.length > 0 && (
